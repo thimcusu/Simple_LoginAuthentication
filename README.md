@@ -3,6 +3,14 @@
 1. Run `npm install`.
 2. Run `npm start` to run application locally
 
+## QUICKLY DEMO
+
+- First time, page will redirect to login page.
+- Login with:
+  - username: **admin**
+  - password: **admin**
+- Click **Create** to register or access localhost:3000/register
+
 ### Production Dependencies
 
 | **Dependency**   | **Use**                                              |
