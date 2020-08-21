@@ -2,6 +2,8 @@
 
 1. Run `npm install`.
 2. Run `npm start` to run application locally
+3. If errors occur, maybe you need to install module globally `-g`
+   Example: `bash npm install -g nodemon`
 
 ## QUICKLY DEMO
 
@@ -9,7 +11,7 @@
 - Login with:
   - username: **admin**
   - password: **admin**
-- Click **Create** to register or access localhost:3000/register
+- Click **Create** to register or access localhost:3000/register .
 
 ### Production Dependencies
 
@@ -45,3 +47,7 @@
 | webpack                | Bundler with plugin ecosystem and integrated dev server          |
 | webpack-cli            | Run Webpack via the command line                                 |
 | webpack-dev-server     | Serve app via Webpack                                            |
+
+```
+
+```
