@@ -1,35 +1,24 @@
-import React, { useEffect } from "react";
+import React from "react";
 import PropTypes from "prop-types";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import useFetchUsers from "../api/useFetchUsers";
-import { getCurrentUser, logOut } from "../actions/userAction";
+import { logOut } from "../actions/userAction";
 import UserTable from "../containers/UserTable";
 import Header from "./Header";
 
-function HomePage({ history }) {
+function HomePage({ history, currentUser, loggedIn }) {
   const dispatch = useDispatch();
-  const { currentUser } = useSelector((state) => state);
   const { users, apiCallStatus: callApiUserStatus } = useFetchUsers();
   const isLoading = callApiUserStatus !== 0;
 
-  useEffect(() => {
-    fetchCurrentUSer();
-  }, []);
-  const fetchCurrentUSer = async () => {
-    try {
-      await dispatch(getCurrentUser());
-    } catch (err) {
-      console.log(err);
-    }
-  };
   const handleLogOut = () => {
     dispatch(logOut());
     history.push("/login");
   };
   return (
     <>
-      {currentUser ? (
+      {loggedIn ? (
         <div className="app">
           <Header currentUser={currentUser.user} onLogOut={handleLogOut} />
           <div className="container-fluid table-wrapper">
@@ -49,6 +38,8 @@ function HomePage({ history }) {
 
 HomePage.propTypes = {
   history: PropTypes.object,
+  currentUser: PropTypes.object,
+  loggedIn: PropTypes.bool,
 };
 
 export default HomePage;

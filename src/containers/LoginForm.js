@@ -7,7 +7,7 @@ import WrapperForm from "../components/common/WrapperForm";
 import { postLoginUser, logOut } from "../actions/userAction";
 import { getJwt } from "../utils/jwt";
 
-function LoginForm({ history, onLoggedIn }) {
+function LoginForm({ history }) {
   const dispatch = useDispatch();
 
   const [username, setUsername] = useState("");
@@ -28,10 +28,9 @@ function LoginForm({ history, onLoggedIn }) {
     }
     try {
       await dispatch(postLoginUser({ username, password }));
-      onLoggedIn();
       history.push("/");
     } catch (error) {
-      alert(error + "\n\bIncorrect password or username!");
+      alert(error + "\nIncorrect password or username!");
     }
   };
 

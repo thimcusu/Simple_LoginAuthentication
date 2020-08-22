@@ -1,26 +1,18 @@
 import { useDispatch, useSelector, shallowEqual } from "react-redux";
 
 import { getCurrentUser } from "../actions/userAction";
-import { useCallback, useEffect } from "react";
+import { useEffect } from "react";
+import { getJwt } from "../utils/jwt";
 
 function useFetchCurrentUser() {
   const distpatch = useDispatch();
-  const { currentUser, apiCallStatus } = useSelector(
-    (state) => state,
-    shallowEqual
-  );
-  const boundAction = useCallback(() => {
-    return distpatch(getCurrentUser());
-  }, [distpatch]);
+  const currentUser = useSelector((state) => state.currentUser, shallowEqual);
   useEffect(() => {
-    if (!currentUser.user) {
-      boundAction();
-    }
-  }, [boundAction, currentUser]);
+    if (!getJwt()) return;
+    distpatch(getCurrentUser());
+  }, []);
   return {
-    currentUser: currentUser.user,
-    fetchData: boundAction,
-    apiCallStatus,
+    currentUser,
   };
 }
 

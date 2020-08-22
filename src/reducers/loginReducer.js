@@ -1,6 +1,7 @@
 import * as types from "../constants/actionType";
 
 const initialState = {};
+
 export default function loginReducer(state = initialState, action) {
   switch (action.type) {
     case types.LOGIN_SUCCESS:

@@ -37,7 +37,6 @@ function isAuthenticated({ username, password }) {
   );
 }
 server.post("/auth/login", (req, res) => {
-  console.log(111);
   const { username, password } = req.body;
   if (isAuthenticated({ username, password }) === -1) {
     const status = 401;
@@ -52,18 +51,17 @@ server.post("/auth/login", (req, res) => {
 
 //register
 server.use("/users/", (req, res, next) => {
-  console.log(222);
   if (req.method === "POST") {
     const error = validateResgister(req.body);
     if (error) {
-      res.status(400).send(error);
+      return res.status(400).send(error);
     }
     const { username, email } = req.body;
     const duplicateUser = userDb.users.filter((user) => {
       return user.username === username || user.email === email;
     }).length;
     if (duplicateUser) {
-      res.status(409).send({
+      return res.status(409).send({
         message: "Duplicated username or email",
       });
     }
@@ -71,38 +69,32 @@ server.use("/users/", (req, res, next) => {
   next();
 });
 
-server.get("/me", (req, res, next) => {
+server.get("/me", (req, res) => {
   const token = req.headers.authorization;
   if (token === undefined || token.split(" ")[0] !== "Bearer") {
-    res.status(401).json("Error in authorization format");
-    return;
+    return res.status(401).json("Error in authorization format");
   }
   jwt.verify(token.split(" ")[1], SECRET_KEY, (err, decode) => {
-    if (err) return res.json({ error: "Invalid token" });
+    if (err) return res.status(401).json({ error: "Invalid token" });
     const currentUser = userDb.users.find(
       (user) => user.username === decode.username
     );
-    res.status(200).json({
+    return res.status(200).json({
       user: currentUser,
     });
   });
-  next();
 });
 
 server.use(/^(?!\/auth).*$/, (req, res, next) => {
-  console.log(req.originalUrl);
   if (req.method === "POST" && req.originalUrl.endsWith("/users")) {
-    console.log(req.originalUrl);
     next();
   } else {
     const token = req.headers.authorization;
     if (token === undefined || token.split(" ")[0] !== "Bearer") {
-      console.log(333);
-      res.status(401).json("Error in authorization format");
-      return;
+      return res.status(401).json("Error in authorization format");
     }
     jwt.verify(token.split(" ")[1], SECRET_KEY, (err, decode) => {
-      if (err) return res.json({ error: "Invalid token" });
+      if (err) return res.status(401).json({ error: "Invalid token" });
       return decode;
     });
     next();

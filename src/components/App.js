@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { Provider as ReduxProvider } from "react-redux";
 
@@ -9,33 +9,17 @@ import RegisterForm from "../containers/RegisterForm";
 
 import configureStore from "../store";
 import ProtectRoute from "../components/ProtectRoute";
-import { getJwt } from "../utils/jwt";
 
 const store = configureStore();
 
 const App = () => {
-  const [loggedIn, setLoggedIn] = useState(getJwt());
-
-  const handleChangleLoggedIn = () => {
-    setLoggedIn(getJwt());
-  };
   return (
     <ReduxProvider store={store}>
       <Router>
         <div className="app">
           <Switch>
-            <ProtectRoute
-              exact
-              path="/"
-              component={HomePage}
-              loggedIn={loggedIn}
-            ></ProtectRoute>
-            <Route
-              path="/login"
-              render={(props) => (
-                <LoginForm {...props} onLoggedIn={handleChangleLoggedIn} />
-              )}
-            />
+            <ProtectRoute exact path="/" component={HomePage}></ProtectRoute>
+            <Route path="/login" component={LoginForm} />
             <Route path="/register" component={RegisterForm}></Route>
             <Route component={PageNotFound}></Route>
           </Switch>
