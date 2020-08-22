@@ -8,8 +8,6 @@ export default function loginReducer(state = initialState, action) {
       return { ...state, token: action.payload };
     case types.KEEP_SIGNED_SUCCESS:
       return { ...state, user: action.payload };
-    case types.LOGOUT:
-      return {};
     default:
       return state;
   }
